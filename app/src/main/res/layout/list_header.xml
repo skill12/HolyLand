@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="150dp"
+    android:background="@drawable/list_header"
+    android:clickable="false">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:text="자료사용을 허락해주신\n
+Daum - 로즈마리 블로그 하늘호수 님과\n
+분도여행사 님 에게\n
+감사한 마음을 전합니다."
+        android:textSize="15sp"
+        android:textColor="#000000"
+        android:background="#77ffffff"
+        android:textStyle="bold|italic"/>
+
+
+</RelativeLayout>
