@@ -25,6 +25,7 @@ import java.util.ArrayList;
 public class SecondActivity extends AppCompatActivity {
 
     LinearLayout layoutSecond;
+    LinearLayout btnMap;
 
     ViewPager pager;
     FragmentAdapter adapter;
@@ -47,6 +48,7 @@ public class SecondActivity extends AppCompatActivity {
         layoutDrawer = findViewById(R.id.layout_drawer);
         layoutTop = findViewById(R.id.layout_top);
         layoutSecond = findViewById(R.id.layout_second);
+        btnMap = findViewById(R.id.btn_map);
 
         setNaviList();
 
@@ -62,6 +64,39 @@ public class SecondActivity extends AppCompatActivity {
 
         pager = findViewById(R.id.pager);
         adapter = new FragmentAdapter(getSupportFragmentManager());
+        pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int i, float v, int i1) {
+                
+            }
+
+            @Override
+            public void onPageSelected(int i) {
+
+                switch (i){
+                    case 0:
+                        layoutSecond.setBackgroundResource(R.drawable.back02);
+                        btnMap.setVisibility(View.GONE);
+                        break;
+                    case 1:
+                        layoutSecond.setBackgroundResource(R.drawable.back01);
+                        btnMap.setVisibility(View.VISIBLE);
+                        break;
+                    case 2:
+                        layoutSecond.setBackgroundResource(R.drawable.back04);
+                        btnMap.setVisibility(View.GONE);
+                        break;
+
+                }
+
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int i) {
+
+            }
+        });
+
         pager.setAdapter(adapter);
 
         tabLayout = findViewById(R.id.tablayout);

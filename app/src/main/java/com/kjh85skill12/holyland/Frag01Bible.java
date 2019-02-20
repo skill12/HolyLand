@@ -30,4 +30,6 @@ public class Frag01Bible extends Fragment {
 
         return view;
     }
+
+
 }

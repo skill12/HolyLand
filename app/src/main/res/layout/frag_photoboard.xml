@@ -4,14 +4,46 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <TextView
+        android:id="@+id/tv_super"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="공지 : 가나다라마바사 아자차카타파하가나다라마바"
+        android:textColor="#000000"
+        android:textStyle="bold|italic"
+        android:textSize="20sp"
+        android:gravity="center"
+        android:maxLines="1"
+        android:clickable="true"
+        android:layout_margin="8dp"/>
+    <View
+        android:id="@+id/divider"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="#000000"
+        android:layout_below="@id/tv_super"
+        android:layout_marginRight="8dp"
+        android:layout_marginLeft="8dp"/>
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recyclerview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_below="@id/divider"
         android:orientation="vertical"
         android:padding="8dp">
 
     </android.support.v7.widget.RecyclerView>
+
+    <com.leinardi.android.speeddial.SpeedDialView
+        android:id="@+id/btn_add"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        app:sdMainFabClosedSrc="@drawable/ic_add_black_24dp" >
+
+    </com.leinardi.android.speeddial.SpeedDialView>
 
 
 

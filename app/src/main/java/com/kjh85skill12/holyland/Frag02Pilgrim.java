@@ -60,7 +60,9 @@ public class Frag02Pilgrim extends Fragment {
         return view;
     }
 
-    public void imgSliderSet(int position,int cnt){
+
+
+    public void imgSliderSet(int position, int cnt){
 
         slideShow.removeAllSliders();
 
