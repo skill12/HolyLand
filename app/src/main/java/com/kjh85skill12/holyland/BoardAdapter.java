@@ -1,8 +1,11 @@
 package com.kjh85skill12.holyland;
 
+import android.content.ClipData;
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -71,6 +74,22 @@ public class BoardAdapter extends RecyclerView.Adapter {
             tvName = itemView.findViewById(R.id.tv_name);
             tvMsg = itemView.findViewById(R.id.tv_msg);
             tvDate = itemView.findViewById(R.id.tv_date);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                    LayoutInflater inflater = LayoutInflater.from(context);
+                    View layout = inflater.inflate(R.layout.dialog_show,null);
+
+                    ImageView showIV = layout.findViewById(R.id.dialog_show_iv);
+
+                    Picasso.with(context).load(items.get(getLayoutPosition()).imgMain).into(showIV);
+
+                    builder.setView(layout);
+                    builder.show();
+                }
+            });
         }
     }
 }

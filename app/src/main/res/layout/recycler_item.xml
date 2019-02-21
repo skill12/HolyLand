@@ -14,12 +14,19 @@
         android:layout_gravity="center">
 
         <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="200dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/noimg"
+            android:layout_centerHorizontal="true"
+            android:layout_marginRight="4dp"
+            android:layout_marginLeft="4dp"/>
+        <ImageView
             android:id="@+id/img_main"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="200dp"
             android:scaleType="centerCrop"
             android:src="@drawable/a001"
-            android:clickable="true"
             android:layout_centerHorizontal="true"
             android:layout_marginRight="4dp"
             android:layout_marginLeft="4dp"/>
@@ -73,6 +80,17 @@
         </RelativeLayout>
 
         <de.hdodenhof.circleimageview.CircleImageView
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_below="@id/img_main"
+            android:layout_centerHorizontal="true"
+            android:src="@drawable/noimg"
+            app:civ_border_color="#ffffff"
+            app:civ_border_width="3dp"
+            android:layout_marginTop="-30dp"
+            android:scaleType="centerCrop"/>
+
+        <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/img_selfi"
             android:layout_width="60dp"
             android:layout_height="60dp"
@@ -81,7 +99,9 @@
             android:src="@drawable/ic_launcher_background"
             app:civ_border_color="#ffffff"
             app:civ_border_width="3dp"
-            android:layout_marginTop="-30dp"/>
+            android:layout_marginTop="-30dp"
+            android:scaleType="centerCrop"/>
+
 
     </RelativeLayout>
 

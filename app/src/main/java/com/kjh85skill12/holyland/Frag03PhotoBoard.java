@@ -1,5 +1,6 @@
 package com.kjh85skill12.holyland;
 
+import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
@@ -11,9 +12,11 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.CursorLoader;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,11 +29,15 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.error.VolleyError;
+import com.android.volley.request.JsonArrayRequest;
 import com.android.volley.request.SimpleMultiPartRequest;
 import com.android.volley.toolbox.Volley;
 import com.leinardi.android.speeddial.SpeedDialActionItem;
 import com.leinardi.android.speeddial.SpeedDialView;
 import com.squareup.picasso.Picasso;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -59,6 +66,8 @@ public class Frag03PhotoBoard extends Fragment {
     String mainImgPath;
     String selfiImgPath;
 
+    SwipeRefreshLayout layoutRefresh;
+
     String getRealPathFromUri(Uri uri){
         String[] proj= {MediaStore.Images.Media.DATA};
         CursorLoader loader= new CursorLoader(getActivity(), uri, proj, null, null, null);
@@ -69,7 +78,6 @@ public class Frag03PhotoBoard extends Fragment {
         cursor.close();
         return  result;
     }
-
 
     @Nullable
     @Override
@@ -127,6 +135,7 @@ public class Frag03PhotoBoard extends Fragment {
                                     @Override
                                     public void onResponse(String response) {
                                         new AlertDialog.Builder(getActivity()).setMessage(response).show();
+                                        loadDataToJson();
                                     }
                                 }, new Response.ErrorListener() {
                                     @Override
@@ -144,7 +153,6 @@ public class Frag03PhotoBoard extends Fragment {
                                 RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
 
                                 requestQueue.add(multiPartRequest);
-
                             }
                         });
                         builder.setNegativeButton("취소",null);
@@ -156,17 +164,74 @@ public class Frag03PhotoBoard extends Fragment {
             }
         });
 
+        layoutRefresh = view.findViewById(R.id.layout_refresh);
+        layoutRefresh.setColorSchemeColors(Color.BLUE,Color.CYAN,Color.RED,Color.MAGENTA);
+        layoutRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                loadDataToJson();
+                layoutRefresh.setRefreshing(false);
+            }
+        });
         recyclerView = view.findViewById(R.id.recyclerview);
         adapter= new BoardAdapter(items,getActivity());
 
         layoutManager = new StaggeredGridLayoutManager(2,1);
-        layoutManager.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_MOVE_ITEMS_BETWEEN_SPANS);
-        layoutManager.setOrientation(StaggeredGridLayoutManager.VERTICAL);
 
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
 
+        loadDataToJson();
+
+
         return view;
+    }
+
+    void loadDataToJson(){
+
+        String serverUrl = "http://skill12.dothome.co.kr/HolyLand/loadDBToJson.php";
+
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.POST,serverUrl,null, new Response.Listener<JSONArray>() {
+            @Override
+            public void onResponse(JSONArray response) {
+
+                try {
+                    items.clear();
+                    adapter.notifyDataSetChanged();
+
+                    String apendPath = "http://skill12.dothome.co.kr/HolyLand/";
+
+                    for (int i = 0; i < response.length(); i++) {
+                        Log.i("response",""+response.length());
+
+                        JSONObject jsonObject = response.getJSONObject(i);
+
+                        String name = jsonObject.getString("name");
+                        String pass = jsonObject.getString("password");
+                        String msg = jsonObject.getString("message");
+                        String mainFilePath = jsonObject.getString("mainfilepath");
+                        String selfiFilePath = jsonObject.getString("selfifilepath");
+                        String date = jsonObject.getString("date");
+
+                        mainFilePath = apendPath+mainFilePath;
+                        selfiFilePath = apendPath+selfiFilePath;
+
+                        items.add(0,new BoardItem(mainFilePath,selfiFilePath,name,msg,date,pass));
+                        adapter.notifyDataSetChanged();
+                        Log.i("ssee",items.size()+"");
+                    }
+                }catch (Exception e){}
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getActivity(), error.getMessage(), Toast.LENGTH_SHORT).show();
+                Log.i("jsonerror",error.getMessage());
+            }
+        });
+
+        RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
+        requestQueue.add(jsonArrayRequest);
 
     }
 

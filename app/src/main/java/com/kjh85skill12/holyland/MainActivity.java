@@ -1,16 +1,32 @@
 package com.kjh85skill12.holyland;
 
 import android.Manifest;
+import android.app.VoiceInteractor;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.error.VolleyError;
+import com.android.volley.request.SimpleMultiPartRequest;
+import com.android.volley.toolbox.Volley;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
+
 public class MainActivity extends AppCompatActivity {
+
+    String token;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,6 +38,45 @@ public class MainActivity extends AppCompatActivity {
                 requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},100);
             }
         }
+
+        // Get token
+        // [START retrieve_current_token]
+        FirebaseInstanceId.getInstance().getInstanceId()
+                .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<InstanceIdResult> task) {
+                        if (!task.isSuccessful()) {
+                            Log.w("TAG!!", "getInstanceId failed", task.getException());
+                            return;
+                        }else{
+                            // Get new Instance ID token
+                            token = task.getResult().getToken();
+
+                            String serverUrl = "http://skill12.dothome.co.kr/HolyLand/tokenInsert.php";
+
+                            SimpleMultiPartRequest multiPartRequest = new SimpleMultiPartRequest(Request.Method.POST, serverUrl, new Response.Listener<String>() {
+                                @Override
+                                public void onResponse(String response) {
+                                    new AlertDialog.Builder(MainActivity.this).setMessage(response).show();
+                                }
+                            }, new Response.ErrorListener() {
+                                @Override
+                                public void onErrorResponse(VolleyError error) {
+                                    Toast.makeText(MainActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show();
+                                }
+                            });
+
+                            multiPartRequest.addStringParam("token",token);
+
+                            RequestQueue requestQueue = Volley.newRequestQueue(MainActivity.this);
+                            requestQueue.add(multiPartRequest);
+
+                        }
+
+
+                    }
+                });
+        /* [END retrieve_current_token] */
     }
 
     @Override

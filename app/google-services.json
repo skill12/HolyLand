@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "950535868336",
+    "firebase_url": "https://holyland-1bed5.firebaseio.com",
+    "project_id": "holyland-1bed5",
+    "storage_bucket": "holyland-1bed5.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:950535868336:android:52782096fe727a35",
+        "android_client_info": {
+          "package_name": "com.kjh85skill12.holyland"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "950535868336-7sj7ib5247mgus8ur92sct2npvaat9an.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCzlB3VPfjba290fyDE2AK84AtOlxae1DU"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
