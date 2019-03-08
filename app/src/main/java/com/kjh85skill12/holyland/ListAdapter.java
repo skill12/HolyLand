@@ -1,5 +1,6 @@
 package com.kjh85skill12.holyland;
 
+import android.text.method.ScrollingMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;

@@ -8,7 +8,7 @@
         android:id="@+id/tv_super"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="공지 : 가나다라마바사 아자차카타파하가나다라마바"
+        android:text="공지사항 : "
         android:textColor="#000000"
         android:textStyle="bold|italic"
         android:textSize="20sp"

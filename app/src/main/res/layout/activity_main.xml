@@ -9,11 +9,21 @@
     android:background="@drawable/back03">
 
     <ImageView
+        android:id="@+id/img_logo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/mainlogo"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="50dp"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:text="자료 설명에는\n개신교 설명과 천주교 설명이 혼용되어 있습니다."
+        android:textStyle="bold"
+        android:textSize="24sp"
+        android:layout_margin="16dp"/>
 
 
 

@@ -79,15 +79,22 @@ public class BoardAdapter extends RecyclerView.Adapter {
                 @Override
                 public void onClick(View v) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                    final AlertDialog ad = builder.create();
                     LayoutInflater inflater = LayoutInflater.from(context);
                     View layout = inflater.inflate(R.layout.dialog_show,null);
 
                     ImageView showIV = layout.findViewById(R.id.dialog_show_iv);
 
-                    Picasso.with(context).load(items.get(getLayoutPosition()).imgMain).into(showIV);
+                    showIV.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            ad.dismiss();
+                        }
+                    });
 
-                    builder.setView(layout);
-                    builder.show();
+                    Picasso.with(context).load(items.get(getLayoutPosition()).imgMain).into(showIV);
+                    ad.setView(layout);
+                    ad.show();
                 }
             });
         }

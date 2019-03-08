@@ -34,6 +34,8 @@ public class Frag02Pilgrim extends Fragment {
 
     ArrayList<String> tags = new ArrayList<>();
 
+    int[] sumI = new int[]{0,0,11,25,48,56,66,86,106,109,113,119,136,148,163,178,194,209,224,237,278,296,310,319,333,341,363,371,377,385,395,414,459,470,473,480,493,512,534,538};
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -50,11 +52,11 @@ public class Frag02Pilgrim extends Fragment {
 
         for(int i=0;i<11;i++){
             TextSliderView textSliderView = new TextSliderView(getActivity());
-            if(i<10) textSliderView.description("aaa").image("http://skill12.dothome.co.kr/HolyLand/Img/img1/00"+i+".jpg");
-            else textSliderView.description("aaa").image("http://skill12.dothome.co.kr/HolyLand/Img/img1/0"+i+".jpg");
+            if(i<10) textSliderView.description(getString(R.string.slide_001_000+i)).image("http://skill12.dothome.co.kr/HolyLand/Img/img1/00"+i+".jpg");
+            else textSliderView.description(getString(R.string.slide_001_000+i)).image("http://skill12.dothome.co.kr/HolyLand/Img/img1/0"+i+".jpg");
             slideShow.addSlider(textSliderView);
         }
-        tvPilgrim.setText(R.string.list_1);
+        tvPilgrim.setText(R.string.list_001);
 
 
         return view;
@@ -66,10 +68,10 @@ public class Frag02Pilgrim extends Fragment {
 
         slideShow.removeAllSliders();
 
-        for(int i=0;i<cnt-1;i++){
+        for(int i=0;i<cnt;i++){
             TextSliderView textSliderView = new TextSliderView(getActivity());
-            if(i<10) textSliderView.description("aaa").image("http://skill12.dothome.co.kr/HolyLand/Img/img"+position+"/00"+i+".jpg");
-            else textSliderView.description("aaa").image("http://skill12.dothome.co.kr/HolyLand/Img/img"+position+"/0"+i+".jpg");
+            if(i<10) textSliderView.description(getString(R.string.slide_001_000+(sumI[position]+i))).image("http://skill12.dothome.co.kr/HolyLand/Img/img"+position+"/00"+i+".jpg");
+            else textSliderView.description(getString(R.string.slide_001_000+(sumI[position]+i))).image("http://skill12.dothome.co.kr/HolyLand/Img/img"+position+"/0"+i+".jpg");
             slideShow.addSlider(textSliderView);
         }
 
@@ -77,7 +79,7 @@ public class Frag02Pilgrim extends Fragment {
 
     public void textSet(int position){
 
-        tvPilgrim.setText(R.string.list_1);
+        tvPilgrim.setText(R.string.list_001+(position-1));
 
     }
 }

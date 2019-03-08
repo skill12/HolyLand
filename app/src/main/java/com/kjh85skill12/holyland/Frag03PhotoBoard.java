@@ -31,6 +31,7 @@ import com.android.volley.Response;
 import com.android.volley.error.VolleyError;
 import com.android.volley.request.JsonArrayRequest;
 import com.android.volley.request.SimpleMultiPartRequest;
+import com.android.volley.request.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.leinardi.android.speeddial.SpeedDialActionItem;
 import com.leinardi.android.speeddial.SpeedDialView;
@@ -67,6 +68,8 @@ public class Frag03PhotoBoard extends Fragment {
     String selfiImgPath;
 
     SwipeRefreshLayout layoutRefresh;
+    String tmpSelfiUri;
+    String noti;
 
     String getRealPathFromUri(Uri uri){
         String[] proj= {MediaStore.Images.Media.DATA};
@@ -86,6 +89,14 @@ public class Frag03PhotoBoard extends Fragment {
         View view = inflater.inflate(R.layout.frag_photoboard,container,false);
 
         tvSuper = view.findViewById(R.id.tv_super);
+        tvSuper.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                builder.setMessage(noti).show();
+            }
+        });
+        loadNoti();
         btnAdd = view.findViewById(R.id.btn_add);
         btnAdd.addActionItem(new SpeedDialActionItem.Builder(R.id.fab_add_list,R.drawable.ic_create_white_24dp).setFabBackgroundColor(getResources().getColor(R.color.fab_add)).setLabel("글작성").setLabelColor(Color.BLACK).create());
         btnAdd.setOnActionSelectedListener(new SpeedDialView.OnActionSelectedListener() {
@@ -101,12 +112,14 @@ public class Frag03PhotoBoard extends Fragment {
                         View layout = inflater1.inflate(R.layout.dialog_addlist,null);
 
                         dialogIvSelfi = layout.findViewById(R.id.dialog_iv_selfi);
+                        if(G.lastSelfi!=null) Picasso.with(getActivity()).load(G.lastSelfi).into(dialogIvSelfi);
                         dialogIvSelfi.setOnClickListener(addSelfi);
                         dialogIvAddSelfi = layout.findViewById(R.id.dialog_iv_addselfi);
                         dialogIvAddSelfi.setOnClickListener(addSelfi);
                         dialogTvAddSelfi = layout.findViewById(R.id.dialog_tv_addselfi);
                         dialogTvAddSelfi.setOnClickListener(addSelfi);
                         dialogEtName = layout.findViewById(R.id.dialog_et_name);
+                        if(G.lastName!=null) dialogEtName.setText(G.lastName);
                         dialogEtPass = layout.findViewById(R.id.dialog_et_pass);
                         dialogEtMsg = layout.findViewById(R.id.dialog_et_msg);
                         dialogIvShowpic = layout.findViewById(R.id.dialog_iv_showpic);
@@ -125,9 +138,12 @@ public class Frag03PhotoBoard extends Fragment {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
 
+                                G.lastSelfi = tmpSelfiUri;
+
                                 String serverUrl = "http://skill12.dothome.co.kr/HolyLand/DBInsert.php";
 
                                 String name = dialogEtName.getText().toString();
+                                G.lastName = name;
                                 String pass = dialogEtPass.getText().toString();
                                 String msg = dialogEtMsg.getText().toString();
 
@@ -218,7 +234,6 @@ public class Frag03PhotoBoard extends Fragment {
 
                         items.add(0,new BoardItem(mainFilePath,selfiFilePath,name,msg,date,pass));
                         adapter.notifyDataSetChanged();
-                        Log.i("ssee",items.size()+"");
                     }
                 }catch (Exception e){}
             }
@@ -256,7 +271,7 @@ public class Frag03PhotoBoard extends Fragment {
                     Uri uri = data.getData();
                     if(uri != null){
                         Picasso.with(getActivity()).load(uri).into(dialogIvSelfi);
-
+                        tmpSelfiUri = uri.toString();
                         selfiImgPath = getRealPathFromUri(uri);
                         Toast.makeText(getActivity(), selfiImgPath, Toast.LENGTH_SHORT).show();
                     }
@@ -273,6 +288,28 @@ public class Frag03PhotoBoard extends Fragment {
             startActivityForResult(intent,11);
         }
     }
+
+    void loadNoti(){
+
+        String serverUrl = "http://skill12.dothome.co.kr/HolyLand/loadNoti.php";
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, serverUrl, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                tvSuper.setText("공지사항 : "+response);
+                noti = response;
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getActivity(), error.getMessage(), Toast.LENGTH_SHORT).show();
+                tvSuper.setText("공지사항 로드 실패");
+            }
+        });
+        RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
+        requestQueue.add(stringRequest);
+    }
+
 }
 
 

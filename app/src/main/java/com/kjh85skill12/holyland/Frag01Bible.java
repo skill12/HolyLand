@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.text.method.ScrollingMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,9 +24,10 @@ public class Frag01Bible extends Fragment {
         View view = inflater.inflate(R.layout.frag_bible,container,false);
 
         tvBible = view.findViewById(R.id.tv_bible);
+        tvBible.setMovementMethod(new ScrollingMovementMethod());
 
-        int r = rnd.nextInt(2);
-        tvBible.setText(R.string.bible_1+r);
+        int r = rnd.nextInt(95);
+        tvBible.setText(R.string.bible_001+r);
 
 
         return view;

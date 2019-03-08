@@ -9,6 +9,7 @@
     <ImageView
         android:id="@+id/dialog_show_iv"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent"
+        android:clickable="true"/>
 
 </LinearLayout>
