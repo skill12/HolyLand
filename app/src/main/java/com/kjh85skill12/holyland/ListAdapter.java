@@ -1,5 +1,6 @@
 package com.kjh85skill12.holyland;
 
+import android.content.Context;
 import android.text.method.ScrollingMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,16 +10,20 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
+
 import java.util.ArrayList;
 
 public class ListAdapter extends BaseAdapter {
 
     ArrayList<PilgrimItem> pilgrimItems;
     LayoutInflater inflater;
+    Context context;
 
-    public ListAdapter(ArrayList<PilgrimItem> pilgrimItems, LayoutInflater inflater) {
+    public ListAdapter(ArrayList<PilgrimItem> pilgrimItems, LayoutInflater inflater,Context context) {
         this.pilgrimItems = pilgrimItems;
         this.inflater = inflater;
+        this.context = context;
     }
 
     @Override
@@ -67,7 +72,7 @@ public class ListAdapter extends BaseAdapter {
             }
         }
 
-        iv.setImageResource(pilgrimItem.imgId);
+        Picasso.with(context).load(pilgrimItem.imgId).into(iv);
         tv.setText(pilgrimItem.mainText);
 
         return convertView;

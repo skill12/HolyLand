@@ -112,7 +112,11 @@ public class Frag03PhotoBoard extends Fragment {
                         View layout = inflater1.inflate(R.layout.dialog_addlist,null);
 
                         dialogIvSelfi = layout.findViewById(R.id.dialog_iv_selfi);
-                        if(G.lastSelfi!=null) Picasso.with(getActivity()).load(G.lastSelfi).into(dialogIvSelfi);
+                        if(G.lastSelfi!=null) {
+                            Picasso.with(getActivity()).load(G.tmpLastSelfi).into(dialogIvSelfi);
+                            Uri uri = Uri.parse(G.tmpLastSelfi);
+                            G.lastSelfi = getRealPathFromUri(uri);
+                        }
                         dialogIvSelfi.setOnClickListener(addSelfi);
                         dialogIvAddSelfi = layout.findViewById(R.id.dialog_iv_addselfi);
                         dialogIvAddSelfi.setOnClickListener(addSelfi);
@@ -138,8 +142,6 @@ public class Frag03PhotoBoard extends Fragment {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
 
-                                G.lastSelfi = tmpSelfiUri;
-
                                 String serverUrl = "http://skill12.dothome.co.kr/HolyLand/DBInsert.php";
 
                                 String name = dialogEtName.getText().toString();
@@ -163,8 +165,13 @@ public class Frag03PhotoBoard extends Fragment {
                                 multiPartRequest.addStringParam("name",name);
                                 multiPartRequest.addStringParam("pass",pass);
                                 multiPartRequest.addStringParam("msg",msg);
-                                multiPartRequest.addFile("selfi",selfiImgPath);
-                                multiPartRequest.addFile("main",mainImgPath);
+                                if(G.lastSelfi!=null) {
+                                    multiPartRequest.addFile("selfi", G.lastSelfi);
+                                }
+                                if(mainImgPath!=null) {
+                                    multiPartRequest.addFile("main", mainImgPath);
+                                }
+                                mainImgPath=null;
 
                                 RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
 
@@ -272,7 +279,9 @@ public class Frag03PhotoBoard extends Fragment {
                     if(uri != null){
                         Picasso.with(getActivity()).load(uri).into(dialogIvSelfi);
                         tmpSelfiUri = uri.toString();
+                        G.tmpLastSelfi=tmpSelfiUri;
                         selfiImgPath = getRealPathFromUri(uri);
+                        G.lastSelfi = selfiImgPath;
                         Toast.makeText(getActivity(), selfiImgPath, Toast.LENGTH_SHORT).show();
                     }
                 }

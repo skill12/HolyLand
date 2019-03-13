@@ -1,7 +1,11 @@
 package com.kjh85skill12.holyland;
 
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.media.MediaPlayer;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
@@ -54,6 +58,8 @@ public class SecondActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_second);
 
+
+
         mp = MediaPlayer.create(this,Uri.parse(G.musicUrl));
         mp.setLooping(true);
 
@@ -81,7 +87,7 @@ public class SecondActivity extends AppCompatActivity {
 
 
         LayoutInflater inflater = getLayoutInflater();
-        listAdapter = new ListAdapter(pilgrimItems,inflater);
+        listAdapter = new ListAdapter(pilgrimItems,inflater,this);
         listNavi.setAdapter(listAdapter);
 
         pager = findViewById(R.id.pager);
@@ -98,15 +104,12 @@ public class SecondActivity extends AppCompatActivity {
                 switch (i){
                     case 0:
                         layoutSecond.setBackgroundResource(R.drawable.back02);
-                        btnMap.setVisibility(View.GONE);
                         break;
                     case 1:
                         layoutSecond.setBackgroundResource(R.drawable.back01);
-                        btnMap.setVisibility(View.VISIBLE);
                         break;
                     case 2:
                         layoutSecond.setBackgroundResource(R.drawable.back04);
-                        btnMap.setVisibility(View.GONE);
                         break;
 
                 }
@@ -243,6 +246,7 @@ public class SecondActivity extends AppCompatActivity {
         editor.putString("Selfi",G.lastSelfi);
         editor.putBoolean("Bgm", G.isBgm);
         editor.putBoolean("Token", G.isToken);
+        editor.putString("TmpSelfi",G.tmpLastSelfi);
 
         editor.commit();
     }
@@ -254,6 +258,15 @@ public class SecondActivity extends AppCompatActivity {
     }
 
     public void clickChat(View view) {
-        new AlertDialog.Builder(SecondActivity.this).setMessage("채팅기능을 준비중입니다.!\nComming Soon!!").show();
+
+        Intent intent = null;
+
+        if(G.isLogin) {
+            intent = new Intent(this,ChatingActivity.class);
+        }else{
+            intent = new Intent(this,ChatLogInActivity.class);
+        }
+        startActivity(intent);
+
     }
 }
